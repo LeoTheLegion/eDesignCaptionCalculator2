@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Hello World!</title>
+		<script>window.$ = window.jQuery = require('jquery');</script>
+    </head>
+    <body>
+      <h1>Hello World!</h1>
+      We are using node <script>document.write(process.versions.node)</script>,
+      Chrome <script>document.write(process.versions.chrome)</script>,
+      and Electron <script>document.write(process.versions.electron)</script>.
+		<form id="main">
+			<div>
+				<label for="avatar">Profile picture:</label>
+				<input type="file"
+					   id="zip" name="zip"
+					   accept=".zip" />
+				<input type="submit" value="Send Request">
+			</div>
+		</form>
+		<div id="appendToThis"></div>
+    </body>
+	<script>
+		
+		
+		const electron = require('electron');
+		const {ipcRenderer} = require('electron')
+		
+		document.getElementById('main').onsubmit = e => {
+		   e.preventDefault();
+		   const {ipcRenderer} = require('electron')
+		   file = document.getElementById('zip').files[0].path
+		   ipcRenderer.send('file.zip', file);
+		};
+		
+		ipcRenderer.on('file.html', function (event, htmlFILE) {
+			console.log( "Ren: "+htmlFILE );
+			$.get(htmlFILE, function(data){
+				$("#appendToThis").append(data);
+			});
+		});
+		
+	</script>
+  </html>
