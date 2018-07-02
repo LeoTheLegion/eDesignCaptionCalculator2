@@ -19,13 +19,20 @@
 				<input type="submit" value="Send Request">
 			</div>
 		</form>
-		<div id="appendToThis"></div>
+		<div id="unzippedHtml"></div>
+		<div id="target"></div>
     </body>
 	<script>
 		
 		
 		const electron = require('electron');
 		const {ipcRenderer} = require('electron')
+		
+		function getTableData (table,x,y){
+			var rows = $(table).children('tbody').children('tr').toArray();
+			var col = $(rows[y]).children('td').toArray()
+			return $(col[x]).text();
+		}
 		
 		document.getElementById('main').onsubmit = e => {
 		   e.preventDefault();
@@ -36,9 +43,16 @@
 		
 		ipcRenderer.on('file.html', function (event, htmlFILE) {
 			console.log( "Ren: "+htmlFILE );
-			$.get(htmlFILE, function(data){
-				$("#appendToThis").append(data);
-			});
+			var s = htmlFILE + " table";
+			$('#unzippedHtml').load(s);
+			
+			
+		});
+		
+		$('#unzippedHtml').bind("DOMSubtreeModified",function(){
+		  //alert('changed');
+		   var table =  $('#unzippedHtml table:nth-child(2)');
+			console.log( getTableData(table,1,1) );
 		});
 		
 	</script>
