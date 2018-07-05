@@ -18,7 +18,7 @@ const unzip = require('unzipper')
     win.loadFile('index.html')
   
     // Open the DevTools.
-    win.webContents.openDevTools()
+  // win.webContents.openDevTools()
   
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -57,20 +57,35 @@ const unzip = require('unzipper')
   // receive message from index.html 
 	ipcMain.on('file.zip', function (event, file) {
 	console.log( "Main:" + file );
-	
+		
+	var foundcount = 0;
+	var name = file.replace(/^.*[\\\/]/, '').slice(0,-4);
 	fs.createReadStream(file)
 	  .pipe(unzip.Parse())
 	  .on('entry', function (entry) {
-		var fileName = entry.file;
+		  var fileName = entry.path;
+		console.log(name)
+		  console.log(fileName)
+		   
+		
 		var type = entry.type; // 'Directory' or 'File'
 		var size = entry.size;
-		if (fileName === fileName) {
-		  entry.pipe(fs.createWriteStream("test.html"));
+		if (fileName.indexOf(name)>-1) {
+		  entry.pipe(fs.createWriteStream(__dirname+"test.html"));
+			// event.sender.send('log', __dirname);
+			foundcount += 1 ;
 		} else {
 		  entry.autodrain();
 		}
+	  }).on('finish',function (entry){
+		  event.sender.send('file.html', __dirname+ "test.html");
 	  });
-	   event.sender.send('file.html', "test.html");
+		if(foundcount >= 1 ){
+				console.log( "This is not a MediaSite Zip File" );
+			}else{
+				  //event.sender.send('file.html', "test.html");
+			}
+	 
 	// toPdf = require("jspdf");
 		//var doc = new toPdf();
 
