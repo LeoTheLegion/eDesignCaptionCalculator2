@@ -1,13 +1,14 @@
 {
   "name": "edesigncaptioncalculator2",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "pack": "build --dir",
-    "dist": "build"
+    "dist": "build",
+    "clean": "clean-deps"
   },
   "repository": {
     "type": "git",
@@ -24,24 +25,14 @@
     "electron-builder": "^20.19.1"
   },
   "dependencies": {
-    "binary": "^0.3.0",
     "datejs": "^1.0.0-rc3",
-    "exceljs": "^1.5.1",
-    "fstream": "^1.0.11",
-    "graceful-fs": "^4.1.11",
     "jquery": "^3.3.1",
     "jspdf": "^1.4.1",
     "jspdf-autotable": "^2.3.4",
-    "match-stream": "0.0.2",
-    "readable-stream": "^2.3.6",
-    "setimmediate": "^1.0.5",
-    "temp": "^0.8.3",
-    "unzip": "^0.1.11",
-    "unzip2": "^0.2.5",
-    "unzipper": "^0.9.0",
-    "xmlhttprequest": "^1.8.0"
+    "unzipper": "^0.9.0"
   },
   "build": {
-    "asar": "false"
+    "asar": "true",
+    "icon": "icon.png"
   }
 }
