@@ -3,23 +3,39 @@
     <head>
       <meta charset="UTF-8">
       <title>eDesignCaptionCalculator2</title>
+	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 		<script>window.$ = window.jQuery = require('jquery');</script>
+		<style>
+		body {
+		    padding: 20px;
+			background-color: linen;
+		}
+
+		</style>
     </head>
     <body>
       <h1>eDesignCaptionCalculator2</h1>
 		<form id="main">
 			<div>
-				<label for="zip">Input Zipped File(With no spaces in filename):</label>
-				<input type="file"
+				<label for="zip">Drag or Upload Zipped File(With no spaces in filename):</label>
+				<input class="btn btn-primary" type="file"
 					   id="zip" name="zip"
 					   accept=".zip" />
-				<br>Rate:<input type="number" id="rate" value="1.00" step=".01"/>
 				<br>
-				<input type="submit" value="Send Request">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="inputGroup-sizing-default">Rate:</span>
+				  </div>
+				  <input type="text" class="form-control" aria-label="Default" 
+				  aria-describedby="inputGroup-sizing-default"
+				   type="number" id="rate" value="1.00" step=".01">
+				</div>
+				<br>
+				<input class="btn btn-danger" type="submit" value="Convert">
 			</div>
 		</form>
-		<div id="unzippedHtml"></div>
-		<div id="target">
+		<div id="unzippedHtml" style="display: none;"></div>
+		<div id="target"style="display: none;">
 		</div>
     </body>
 	<script>
@@ -96,6 +112,10 @@
 			return (new Date).clearTime().addSeconds(total_sec).toString('HH:mm:ss');
 		}
 		///////////////////////////////////////////////////////////////////////////////////
+		$('#zip').change(function() {
+		  $('#main').submit();
+		});
+		
 		document.getElementById('main').onsubmit = e => {
 		   e.preventDefault();
 		   const {ipcRenderer} = require('electron')
@@ -128,8 +148,10 @@
 		});
 		
 		$('#unzippedHtml').bind("DOMSubtreeModified",function(){
-		  //alert('changed');
-		  
+		if ($('#unzippedHtml').html() == ""){
+				return
+			}
+		  	
 		   var table =  $('#unzippedHtml table:nth-child(2)');
 			var i = 1
 			var arr = []

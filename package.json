@@ -1,7 +1,7 @@
 {
   "name": "edesigncaptioncalculator2",
-  "version": "1.0.3",
-  "description": "",
+  "version": "1.0.4",
+  "description": "A program that takes mediasite sheet from google sheet zip and cproduces a pdf with calculations for total cost",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -26,6 +26,8 @@
   },
   "dependencies": {
     "datejs": "^1.0.0-rc3",
+    "dropzone": "^5.5.1",
+    "electron-drag-drop": "^1.1.0",
     "jquery": "^3.3.1",
     "jspdf": "^1.4.1",
     "jspdf-autotable": "^2.3.4",
