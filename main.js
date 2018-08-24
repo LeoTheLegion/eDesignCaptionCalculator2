@@ -88,11 +88,16 @@ const unzip = require('unzipper')
 			}else{
 				  //event.sender.send('file.html', "test.html");
 			}
-	 
-	// toPdf = require("jspdf");
-		//var doc = new toPdf();
-
-		//doc.text('Hello world!', 10, 10);
-	  
+  });
+  
+  ipcMain.on('file.docx', function (event, file) {
+	console.log( "Main:" + file );
+	var docx2html=require('docx2html')
+	docx2html(fileInput.files[0],{container:document.getElementById('a')}).then(function(html){
+		html.toString()
+		console.log( "Main:" + html.toString() );
+	})
+	//event.sender.send('file.html', __dirname+ "test.html");
 	  
   });
+  
