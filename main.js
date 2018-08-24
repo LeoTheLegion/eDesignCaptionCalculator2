@@ -4,7 +4,8 @@ const path = require ('path');
 const fs = require('fs');
 //const path = require('path');
 const unzip = require('unzipper')
-
+//var docx2html=require('docx2html')
+	var mammoth = require("mammoth");
   
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
@@ -92,11 +93,13 @@ const unzip = require('unzipper')
   
   ipcMain.on('file.docx', function (event, file) {
 	console.log( "Main:" + file );
-	var docx2html=require('docx2html')
-	docx2html(fileInput.files[0],{container:document.getElementById('a')}).then(function(html){
-		html.toString()
-		console.log( "Main:" + html.toString() );
-	})
+	
+	mammoth.convertToHtml({path: file})
+    .then(function(result){
+        var html = result.value; // The generated HTML
+        var messages = result.messages; // Any messages, such as warnings during conversion
+    })
+    .done();
 	//event.sender.send('file.html', __dirname+ "test.html");
 	  
   });

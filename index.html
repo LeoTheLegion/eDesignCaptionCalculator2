@@ -122,8 +122,8 @@
 		   try{
 		   		file = document.getElementById('zip').files[0].path
 				if(document.getElementById('zip').files[0].type.indexOf("zip") ==  -1){
-					alert("This is not a MediaSite Zip file....");
-					return;
+					//alert("This is not a MediaSite Zip file....");
+					//return;
 				}
 		   }
 		   catch(err){
@@ -131,7 +131,7 @@
 				return;
 		   }
 		   pdfFileName = file.replace(/^.*[\\\/]/, '').slice(0,-4);
-		   ipcRenderer.send('file.zip', file);
+		   ipcRenderer.send('file.docx', file);
 		};
 		
 		ipcRenderer.on('file.html', function (event, htmlFILE) {
