@@ -4,6 +4,7 @@ const path = require ('path');
 const fs = require('fs');
 //const path = require('path');
 const unzip = require('unzipper')
+const tidy = require('htmltidy2').tidy;
 //var docx2html=require('docx2html')
 	var mammoth = require("mammoth");
   
@@ -14,15 +15,15 @@ const unzip = require('unzipper')
   function createWindow () {
     // Create the browser window.
     win = new BrowserWindow({
-		width: 550, 
-		height: 350})
+		width: 375, 
+		height: 700})//550,350
   
     // and load the index.html of the app.
     win.loadFile('index.html')
-  	win.setResizable(false)
+  	//win.setResizable(false)
 	win.setMenu(null)
     // Open the DevTools.
-  // win.webContents.openDevTools()
+   //win.webContents.openDevTools()
   
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -91,16 +92,60 @@ const unzip = require('unzipper')
 			}
   });
   
-  ipcMain.on('file.docx', function (event, file) {
+  String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
+  
+  ipcMain.on('file.doc', function (event, file) {
 	console.log( "Main:" + file );
 	
-	mammoth.convertToHtml({path: file})
-    .then(function(result){
-        var html = result.value; // The generated HTML
-        var messages = result.messages; // Any messages, such as warnings during conversion
-    })
-    .done();
-	//event.sender.send('file.html', __dirname+ "test.html");
+
+	//read file
+	fs.readFile(file, 'utf8', function (err,data) {
+		  if (err) {
+			return console.log(err);
+		  }
+		  //console.log(data);
+		/*data = data.replaceAll('class=3D"relative-table wrapped confluenceTable"','')
+		  data = data.replaceAll('style=3D"width: 100=','')
+		  data = data.replaceAll('.0%;"','')
+		  data = data.replaceAll(' class=3D"wrapped relative-table confluenceTable"','')
+		  */
+		  tidy(data, function(err, html) {
+				//console.log(html);
+				html = html.replaceAll('3D&quot;Section1&quot;','begin')
+				html = html.replaceAll('3D&quot;contentLayout2&quot;','start')
+				html = html.replaceAll('3D&quot;columnLayout','sec')
+				
+				let writeStream = fs.createWriteStream('test.html');
+				writeStream.write(html)
+				writeStream.on('finish', () => {  
+					console.log('test saved!');
+					event.sender.send('file.html', __dirname+ "/test.html");
+				});
+				writeStream.end(); 
+				/*fs.writeFile('test.html', html, (err) => {  
+				// throws an error, you could also catch it here
+				if (err) throw err;
+
+					// success case, the file was saved
+					console.log('test saved!');
+				});*/
+			});
+		  
+		})//.on('finish', function(){
+		//  event.sender.send('file.html', __dirname+ "/test.html");
+		//});
+	
+	//mammoth.convertToHtml({path: file})
+    //.then(function(result){
+     //   var html = result.value; // The generated HTML
+     //   var messages = result.messages; // Any messages, such as warnings during conversion
+    //})
+    //.done();
+	
 	  
   });
   

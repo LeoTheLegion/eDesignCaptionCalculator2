@@ -21,19 +21,20 @@
   },
   "homepage": "https://github.com/mmena2017/eDesignCaptionCalculator2#readme",
   "devDependencies": {
-    "electron": "^2.0.3",
-    "electron-builder": "^20.19.1"
+    "electron": "^2.0.8",
+    "electron-builder": "^20.28.3"
   },
   "dependencies": {
     "datejs": "^1.0.0-rc3",
     "docx2html": "^1.1.0",
     "dropzone": "^5.5.1",
     "electron-drag-drop": "^1.1.0",
+    "htmltidy2": "^0.3.0",
     "jquery": "^3.3.1",
     "jspdf": "^1.4.1",
-    "jspdf-autotable": "^2.3.4",
+    "jspdf-autotable": "^2.3.5",
     "mammoth": "^1.4.6",
-    "unzipper": "^0.9.0"
+    "unzipper": "^0.9.3"
   },
   "build": {
     "asar": "true",
