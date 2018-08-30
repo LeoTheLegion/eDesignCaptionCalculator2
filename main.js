@@ -7,7 +7,7 @@ const unzip = require('unzipper')
 const tidy = require('htmltidy2').tidy;
 //var docx2html=require('docx2html')
 	var mammoth = require("mammoth");
-  
+  const sanitizeHtml = require('sanitize-html');
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
   let win
@@ -100,52 +100,15 @@ const tidy = require('htmltidy2').tidy;
   
   ipcMain.on('file.doc', function (event, file) {
 	console.log( "Main:" + file );
-	
-
 	//read file
 	fs.readFile(file, 'utf8', function (err,data) {
-		  if (err) {
+			if (err) {
 			return console.log(err);
-		  }
-		  //console.log(data);
-		/*data = data.replaceAll('class=3D"relative-table wrapped confluenceTable"','')
-		  data = data.replaceAll('style=3D"width: 100=','')
-		  data = data.replaceAll('.0%;"','')
-		  data = data.replaceAll(' class=3D"wrapped relative-table confluenceTable"','')
-		  */
-		  tidy(data, function(err, html) {
-				//console.log(html);
-				html = html.replaceAll('3D&quot;Section1&quot;','begin')
-				html = html.replaceAll('3D&quot;contentLayout2&quot;','start')
-				html = html.replaceAll('3D&quot;columnLayout','sec')
-				
-				let writeStream = fs.createWriteStream('test.html');
-				writeStream.write(html)
-				writeStream.on('finish', () => {  
-					console.log('test saved!');
-					event.sender.send('file.html', __dirname+ "/test.html");
-				});
-				writeStream.end(); 
-				/*fs.writeFile('test.html', html, (err) => {  
-				// throws an error, you could also catch it here
-				if (err) throw err;
-
-					// success case, the file was saved
-					console.log('test saved!');
-				});*/
-			});
-		  
-		})//.on('finish', function(){
-		//  event.sender.send('file.html', __dirname+ "/test.html");
-		//});
-	
-	//mammoth.convertToHtml({path: file})
-    //.then(function(result){
-     //   var html = result.value; // The generated HTML
-     //   var messages = result.messages; // Any messages, such as warnings during conversion
-    //})
-    //.done();
-	
-	  
+			}
+			data = data.replaceAll('3D&quot;Section1&quot;','begin')
+			data = data.replaceAll('3D&quot;contentLayout2&quot;','start')
+			data = data.replaceAll('3D&quot;columnLayout','sec')
+			event.sender.send('file.html', data);
+		})
   });
   

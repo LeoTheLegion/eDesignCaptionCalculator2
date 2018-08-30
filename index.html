@@ -46,8 +46,8 @@
 		</form>
 		<br>
 		<br>
-		Found a bug? or have thoughts? Use the link below to record your feedback using Google Forms.
-		<a href="https://goo.gl/forms/F7ehWTObsO1Reeoy1">
+		Found a bug? or have thoughts? Use the link below to record your feedback using Google Forms.(An Active Google Account is required)
+		<a href="https://goo.gl/forms/PiFL4vwhLw9iWxzC3">
 			Google Form(Feedback)
 		</a>
 		<div id="unzippedHtml" style="display: none;"></div>
@@ -160,7 +160,7 @@
 			var s = htmlFILE// + " table";
 			//$('#unzippedHtml').load(s);
 			//alert(s)
-			$( "#unzippedHtml" ).load( s, function( response, status, xhr ) {
+			$( "#unzippedHtml" ).html( s, function( response, status, xhr ) {
 			  if ( status == "error" ) {
 			  		alert("Are you sure this a Confluence doc....?");
 			  }
@@ -179,7 +179,7 @@
 				return
 			}
 		  	console.log( "proccessing..." );
-		   var table =  $('#unzippedHtml .sec:nth-child(7) div div table');
+		   var table =  $('#unzippedHtml table:last');//.sec:nth-child(7) div div table');
 		   //alert(table.html());
 			var i = 1
 			var arr = []
@@ -191,7 +191,7 @@
 			if(getTableData(table,3,i) == ""){
 				alert("Warning: Detected an issue with table formatting. Does the table have 12 columns? or all content in the first row?");
 			}
-			
+			///alert()
 			while (getTableData(table,3,i) != ""){
 				console.log( "proccessing..." );
 				var name = getTableData(table,3,i);

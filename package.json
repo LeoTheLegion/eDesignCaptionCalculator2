@@ -1,6 +1,6 @@
 {
   "name": "edesigncaptioncalculator2",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "A program that takes mediasite sheet from google sheet zip and cproduces a pdf with calculations for total cost",
   "main": "main.js",
   "scripts": {
@@ -34,6 +34,7 @@
     "jspdf": "^1.4.1",
     "jspdf-autotable": "^2.3.5",
     "mammoth": "^1.4.6",
+    "sanitize-html": "^1.18.4",
     "unzipper": "^0.9.3"
   },
   "build": {
