@@ -4,8 +4,10 @@ const path = require ('path');
 const fs = require('fs');
 //const path = require('path');
 const unzip = require('unzipper')
-
-  
+const tidy = require('htmltidy2').tidy;
+//var docx2html=require('docx2html')
+	var mammoth = require("mammoth");
+  const sanitizeHtml = require('sanitize-html');
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
   let win
@@ -13,15 +15,15 @@ const unzip = require('unzipper')
   function createWindow () {
     // Create the browser window.
     win = new BrowserWindow({
-		width: 550, 
-		height: 350})
+		width: 375, 
+		height: 700})//550,350
   
     // and load the index.html of the app.
     win.loadFile('index.html')
-  	win.setResizable(false)
+  	//win.setResizable(false)
 	win.setMenu(null)
     // Open the DevTools.
-  // win.webContents.openDevTools()
+   //win.webContents.openDevTools()
   
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -88,11 +90,25 @@ const unzip = require('unzipper')
 			}else{
 				  //event.sender.send('file.html', "test.html");
 			}
-	 
-	// toPdf = require("jspdf");
-		//var doc = new toPdf();
-
-		//doc.text('Hello world!', 10, 10);
-	  
-	  
   });
+  
+  String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
+  
+  ipcMain.on('file.doc', function (event, file) {
+	console.log( "Main:" + file );
+	//read file
+	fs.readFile(file, 'utf8', function (err,data) {
+			if (err) {
+			return console.log(err);
+			}
+			data = data.replaceAll('3D&quot;Section1&quot;','begin')
+			data = data.replaceAll('3D&quot;contentLayout2&quot;','start')
+			data = data.replaceAll('3D&quot;columnLayout','sec')
+			event.sender.send('file.html', data);
+		})
+  });
+  
