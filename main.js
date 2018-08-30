@@ -4,9 +4,7 @@ const path = require ('path');
 const fs = require('fs');
 //const path = require('path');
 const unzip = require('unzipper')
-const tidy = require('htmltidy2').tidy;
 //var docx2html=require('docx2html')
-	var mammoth = require("mammoth");
   const sanitizeHtml = require('sanitize-html');
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
