@@ -15,13 +15,12 @@
     </head>
     <body>
       <h1 class= "text-center">eDesign Caption Calculator2</h1>
-	  
 		<form id="main">
 			<div>
-				<label for="zip">Drag or Upload a <b>non modified .doc</b> File from <b>Confluence</b>(With no spaces in filename):</label>
+				<label for="zip">Drag or Upload Zipped File(With no spaces in filename):</label>
 				<input class="btn btn-primary" type="file"
 					   id="zip" name="zip"
-					   accept=".doc" />
+					   accept=".zip" />
 				<br>
 				<br>
 				<div class="input-group mb-3">
@@ -127,6 +126,8 @@
 			
 			return (new Date).clearTime().addSeconds(total_sec).toString('HH:mm:ss');
 		}
+		////////////////////////////////////////////////////////////////////////////
+		///// PROCESS
 		///////////////////////////////////////////////////////////////////////////////////
 		$('#zip').change(function() {
 		  //$('#main').submit();
@@ -137,85 +138,55 @@
 		   const {ipcRenderer} = require('electron')
 		   try{
 		   		file = document.getElementById('zip').files[0].path
-				//alert(document.getElementById('zip').files[0].path.indexOf("doc"))
-				if(document.getElementById('zip').files[0].path.indexOf("doc") ==  -1){
-					alert("This is not a Confluence doc file....");
+				if(document.getElementById('zip').files[0].type.indexOf("zip") ==  -1){
+					alert("This is not a MediaSite Zip file....");
 					return;
-				}else if(document.getElementById('zip').files[0].path.indexOf("docx") >  -1){
-					alert("This is not a Confluence doc file....");
-					return;
-					}
-				
+				}
 		   }
 		   catch(err){
-		   		alert("You should probably add the Confluence doc first....");
+		   		alert("You should probably add the MediaSite Zip first....");
 				return;
 		   }
 		   pdfFileName = file.replace(/^.*[\\\/]/, '').slice(0,-4);
-		   ipcRenderer.send('file.doc', file);
+		   ipcRenderer.send('file.zip', file);
 		};
 		
 		ipcRenderer.on('file.html', function (event, htmlFILE) {
 			console.log( "Ren: "+htmlFILE );
-			var s = htmlFILE// + " table";
+			var s = htmlFILE + " table";
 			//$('#unzippedHtml').load(s);
-			//alert(s)
-			$( "#unzippedHtml" ).html( s, function( response, status, xhr ) {
+			//alert(__dirname)
+			$( "#unzippedHtml" ).load( s, function( response, status, xhr ) {
 			  if ( status == "error" ) {
-			  		alert("Are you sure this a Confluence doc....?");
+			  		alert("Are you sure this a MediaSite Zip....?");
 			  }
 			});
 			
 		});
 		
-		 String.prototype.replaceAll = function(search, replacement) {
-			var target = this;
-			return target.split(search).join(replacement);
-		};
-		
 		$('#unzippedHtml').bind("DOMSubtreeModified",function(){
-		console.log( "proccessing..." );
 		if ($('#unzippedHtml').html() == ""){
 				return
 			}
-		  	console.log( "proccessing..." );
-		   var table =  $('#unzippedHtml table:last');//.sec:nth-child(7) div div table');
-		   //alert(table.html());
+		  	
+		   var table =  $('#unzippedHtml table:nth-child(2)');
 			var i = 1
 			var arr = []
 			var total = 0
 			var rate = parseFloat($("#rate").val());
 			console.log( rate );
 			total_time = "00:00:00";
-			//console.log( getTableData(table,1,i));
-			if(getTableData(table,3,i) == ""){
-				alert("Warning: Detected an issue with table formatting. Does the table have 12 columns? or all content in the first row?");
-			}
-			///alert()
-			while (getTableData(table,3,i) != ""){
-				console.log( "proccessing..." );
-				var name = getTableData(table,3,i);
-				name = name.replaceAll("=","");
-				name = name.replaceAll("< /span>","");
-				name = name.replaceAll("< /span>","");
-				var time =  getTableData(table,10,i);
-				
-				
-				var cost =  convertTimeToCost(time,rate)
-				if(isNaN(cost)){
-					time = "--:--:--"
-					cost = 0	
-				}else{
-				total += cost;
+			while (getTableData(table,1,i) != ""){
+				var name = getTableData(table,1,i);
+				var time =  getTableData(table,3,i);
 				total_time = addTime(total_time,time)
-				}
-				
-				
-				arr.push([name ,time,cost]);
+				var cost =  convertTimeToCost(time,rate)
+				total += cost;
+				arr.push([getTableData(table,1,i) ,getTableData(table,3,i),'$' + cost.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')]);
 				i += 1;
 			}
 			
-			arr.push(["TOTAL" ,total_time,total.toFixed(2)]);
+			arr.push(["TOTAL" ,total_time,'$' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')]);
 			console.log( arr );
 			writeTable(arr);
 			
@@ -231,11 +202,10 @@
 			doc.text('eDesignCaptionCalculator'
 							, 50, 50)
 			doc.text('Language : '  + $('#sel1').find(":selected").text()
-							, 350, 50)				
+							, 350, 50)
 			doc.text('Class: ' + getTableData($("#unzippedHtml table:nth-child(1)"),0,0)
 							, 50, 100)
-			
-			doc.text('Instructor : '  + getTableData($("#unzippedHtml table:nth-child(1)"),0,2)
+			doc.text('Instructor :'  + getTableData($("#unzippedHtml table:nth-child(1)"),1,0)
 							, 350, 100)
 			doc.autoTable(columns, arr,{
 			margin: {top: 135}
@@ -243,7 +213,7 @@
 			doc.save(pdfFileName+'_CCCost.pdf');
 			
 			var fs = require('fs');
-			var filePath = __dirname +  '/test.html'; 
+			var filePath = __dirname +  'test.html'; 
 			fs.unlinkSync(filePath);
 			
 		});
