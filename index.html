@@ -181,10 +181,17 @@
 			while (getTableData(table,1,i) != ""){
 				var name = getTableData(table,1,i);
 				var time =  getTableData(table,3,i);
-				total_time = addTime(total_time,time)
 				var cost =  convertTimeToCost(time,rate)
+				
+				if(isNaN(cost)){
+					time = "--:--:--";
+					cost = 0;
+				}else{
 				total += cost;
-				arr.push([getTableData(table,1,i) ,getTableData(table,3,i),'$' + cost.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')]);
+				total_time = addTime(total_time,time)
+				}
+				
+				arr.push([name ,time,'$' + cost.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')]);
 				i += 1;
 			}
 			

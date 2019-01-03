@@ -1,6 +1,6 @@
 {
   "name": "edesigncaptioncalculator2",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A program that takes mediasite sheet from google sheet zip and cproduces a pdf with calculations for total cost",
   "main": "main.js",
   "scripts": {
