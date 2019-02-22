@@ -1,0 +1,9 @@
+version: 1.0.8
+files:
+  - url: edesigncaptioncalculator2-setup-1.0.8.exe
+    sha512: 3FudBZXZimgjm70M/Qd2WDLh11PWkXKZM9Ruq57EFIe3DJLB4iVwb6IfEykKFa7DdwU3qo5DH8PzKwWFOoj9pQ==
+    size: 38612189
+path: edesigncaptioncalculator2-setup-1.0.8.exe
+sha512: 3FudBZXZimgjm70M/Qd2WDLh11PWkXKZM9Ruq57EFIe3DJLB4iVwb6IfEykKFa7DdwU3qo5DH8PzKwWFOoj9pQ==
+sha2: 9c28891a682806c053de2a7e368b0052a6348b8617ff4e442928c0474842f6b5
+releaseDate: '2019-01-03T17:43:01.792Z'
