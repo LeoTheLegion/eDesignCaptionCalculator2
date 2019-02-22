@@ -67,19 +67,19 @@ const unzip = require('unzipper')
 	  .pipe(unzip.Parse())
 	  .on('entry', function (entry) {
 		  var fileName = entry.path;
-		console.log(name)
-		  console.log(fileName)
+		console.log(name);
+		console.log(fileName);
 		   
 		
 		var type = entry.type; // 'Directory' or 'File'
 		var size = entry.size;
-		if (fileName.indexOf(name)>-1) {
+		//if (fileName.indexOf(name)>-1) {
 		  entry.pipe(fs.createWriteStream(__dirname+"test.html"));
 			// event.sender.send('log', __dirname);
-			foundcount += 1 ;
-		} else {
+		//	foundcount += 1 ;
+		//} else {
 		  entry.autodrain();
-		}
+		//}
 	  }).on('finish',function (entry){
 		  event.sender.send('file.html', __dirname+ "test.html");
 	  });
