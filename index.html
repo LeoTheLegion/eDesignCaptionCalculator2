@@ -213,11 +213,13 @@
 			doc.text('Language : '  + $('#sel1').find(":selected").text()
 							, 350, 50)
 			doc.text('Class: ' + getTableData($("#unzippedHtml table:nth-child(1)"),0,0)
-							, 50, 100)
+							, 50, 75)
 			doc.text('Instructor :'  + getTableData($("#unzippedHtml table:nth-child(1)"),1,0)
-							, 350, 100)
+							, 350, 75)
+			doc.text('Total number of videos: '  + (i-1)
+			, 50, 100)
 			doc.autoTable(columns, arr,{
-			margin: {top: 135}
+			margin: {top: 110}
 		});
 			doc.save(pdfFileName+'_CCCost.pdf');
 			
