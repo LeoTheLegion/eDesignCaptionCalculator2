@@ -1,6 +1,6 @@
 {
   "name": "edesigncaptioncalculator2",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "A program that takes mediasite sheet from google sheet zip and cproduces a pdf with calculations for total cost",
   "main": "main.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/mmena2017/eDesignCaptionCalculator2#readme",
   "devDependencies": {
-    "electron": "^2.0.3",
+    "electron": "^4.0.5",
     "electron-builder": "^20.19.1"
   },
   "dependencies": {
